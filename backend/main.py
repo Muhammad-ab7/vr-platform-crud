@@ -6,6 +6,7 @@ import crud
 import schemas 
 from fastapi.middleware.cors import CORSMiddleware
 
+
 app = FastAPI()
 
 app.add_middleware(
@@ -56,3 +57,12 @@ def edit_device(device_id: int, device: schemas.UserDeviceBase, db: Session = De
 def remove_device(device_id: int, db: Session = Depends(get_db)):
     crud.delete_device(db, device_id)
     return {"message": "Device deleted"}
+
+@app.post("/login")
+def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
+    return crud.verify_user_login(db, credentials.username, credentials.password)
+
+@app.post("/signup", response_model=dict)
+def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    crud.create_user(db, user)
+    return {"message": "Signup successful"}

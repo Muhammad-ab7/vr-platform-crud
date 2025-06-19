@@ -6,15 +6,19 @@ class UserBase(BaseModel):
     username: str
     email: str
 
-class UserCreate(UserBase):
-    password: str
-
 class UserOut(UserBase):
     user_id: int
-    created_at: datetime
+    role: str  # add this
 
     class Config:
         orm_mode = True
+
+class UserCreate(UserBase):
+    password: str
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 # ----- UserDevice Schemas -----
 class UserDeviceBase(BaseModel):
@@ -22,12 +26,14 @@ class UserDeviceBase(BaseModel):
     serial_number: str
 
 class UserDeviceCreate(UserDeviceBase):
-    user_id: int
+      pass
 
 class UserDeviceOut(UserDeviceBase):
     device_id: int
-    user_id: int
+    device_type: str
+    serial_number: str
     registered_at: datetime
 
     class Config:
         orm_mode = True
+
